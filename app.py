@@ -12,6 +12,11 @@ DATA_FILE = "river_level.csv"
 # Intervalo de 5 segundos para testes
 refresh_interval = 5
 
+hide_github_icon = """
+#GithubIcon {
+    visibility: hidden;
+}
+"""
 # Inicializar uma variável de estado para controle de tempo
 if "last_run" not in st.session_state:
     st.session_state.last_run = time.time()
