@@ -76,7 +76,9 @@ if selected == "Nível do Rio":
 
         # Exibir os dados atualizados
         if level_info:
-            st.metric(label="Nível Atual do Rio", value=level_info)
+            st.metric(label="Nível Atual do Rio", value=f"{level_info} metros")
+            st.write("As informações são coletadas do site: [Nível do Rio Sapucaí](https://pmsrs.mg.gov.br/nivel-do-rio-sapucai/)")
+
             st.write(f"Última atualização: {timestamp}")
 
             # Atualizar os dados
