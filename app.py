@@ -8,6 +8,23 @@ import time
 from streamlit_option_menu import option_menu  # Importando a biblioteca
 
 DATA_FILE = "river_level.csv"
+VIEW_COUNT_FILE = "view_count.csv" 
+
+def update_view_count(data_file=VIEW_COUNT_FILE):
+    if os.path.exists(data_file):
+        df = pd.read_csv(data_file)
+        view_count = df.loc[0, "views"] + 1  # Incrementa o contador
+    else:
+        view_count = 1
+        df = pd.DataFrame({"views": [view_count]})
+
+    df.loc[0, "views"] = view_count
+    df.to_csv(data_file, index=False)
+
+    return view_count
+
+# Atualiza e pega o número de visualizações
+view_count = update_view_count()
 
 # Intervalo de 5 segundos para testes
 refresh_interval = 5
@@ -64,6 +81,7 @@ if selected == "Nível do Rio":
         if level_info:
             st.metric(label="Nível Atual do Rio", value=f'{level_info} Metros')
             st.write(f"Última atualização: {timestamp}")
+            st.write("As informações são coletadas do site: [Nível do Rio Sapucaí](https://pmsrs.mg.gov.br/nivel-do-rio-sapucai/)")
 
             # Atualizar os dados
             df = update_data(level_info, timestamp, data_file=DATA_FILE)
@@ -97,17 +115,22 @@ if selected == "Nível do Rio":
         # Exibir os dados atualizados
         if level_info:
             st.metric(label="Nível Atual do Rio", value=f"{level_info} metros")
-            st.write("As informações são coletadas do site: [Nível do Rio Sapucaí](https://pmsrs.mg.gov.br/nivel-do-rio-sapucai/)")
-
             st.write(f"Última atualização: {timestamp}")
+            st.write("As informações são coletadas do site: [Nível do Rio Sapucaí](https://pmsrs.mg.gov.br/nivel-do-rio-sapucai/)")
 
             # Atualizar os dados
             df = update_data(level_info, timestamp, data_file=DATA_FILE)
-            st.dataframe(df)
+            
 
             # Plotar o gráfico
             plot_data(df)
             st.image("plot.png")
+            
+            df = df.rename(columns={
+                'timestamp': 'Hora da Atualização',
+                'level': 'Nível em Metros'
+            })
+            st.dataframe(df)
         else:
             st.error("Não foi possível obter os dados do nível do rio.")
 
@@ -123,7 +146,7 @@ if selected == "Nível do Rio":
     else:
         pass
         # Exibe a mensagem de espera entre as atualizações
-        st.write(f"As atualizações acontecem a cada 1 hora...")
+        st.write(f"As atualizações acontecem a cada 1 hora! {view_count} visualizações do monitor até o momento")
 
 # Tela de Preços de Aluguel (exemplo de outra tela)
 elif selected == "Preços de Aluguel":
