@@ -47,11 +47,12 @@ if selected == "Nível do Rio":
 
             # Atualizar os dados
             df = update_data(level_info, timestamp, data_file=DATA_FILE)
-            st.dataframe(df)
-
             # Plotar o gráfico
             plot_data(df)
             st.image("plot.png")
+
+            # Exibir a tabela abaixo do gráfico
+            st.dataframe(df)
         else:
             st.error("Não foi possível obter os dados do nível do rio.")
         
