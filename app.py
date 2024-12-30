@@ -97,11 +97,11 @@ if selected == "Nível do Rio":
 # Tela de Preços de Aluguel (exemplo de outra tela)
 elif selected == "Preços de Aluguel":
     st.title("Preços de Aluguel")
-    st.write("Aqui estarão os preços de aluguel.")
+    st.write("Em breve, valores de alugueis das imobiliárias de Santa Rita do Sapucaí.")
 
     # Aqui você pode adicionar o código para a página de preços de aluguel.
 
 # Outra tela que você desejar
 else:
     st.title("Outras Informações")
-    st.write("Aqui estarão outras informações relevantes.")
+    st.write("Serão disponibilizadas outras informações úteis, como valores de alugueis e outros utilitários para a população.")
