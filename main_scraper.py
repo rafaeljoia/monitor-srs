@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 import datetime
 import pandas as pd
 import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
 
 import pandas as pd
 
@@ -32,17 +33,36 @@ def update_data(level, timestamp, data_file="river_level.csv"):
     return df
 
 
+
 def plot_data(df):
+    # Certificar que 'timestamp' está no formato correto
     df['timestamp'] = pd.to_datetime(df['timestamp'])
+
+    # Criação do gráfico
     plt.figure(figsize=(10, 6))
-    plt.plot(df['timestamp'], df['level'], marker='o')
+    plt.plot(df['timestamp'], df['level'], marker='o', color='b', linestyle='-', markersize=5)
+
+    # Adicionando título e rótulos
     plt.title("Nível do Rio Sapucaí ao longo do tempo")
     plt.xlabel("Data/Hora")
     plt.ylabel("Nível do Rio (m)")
-    plt.grid(True)
-    plt.tight_layout()
-    plt.savefig("plot.png")
 
+    # Ajustando o formato do eixo X para hora
+    plt.gca().xaxis.set_major_locator(mdates.HourLocator(interval=1))  # Intervalo de 1 hora
+    plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d %H:%M:%S'))  # Formato de data e hora
+
+    # Rotacionando os rótulos do eixo X para melhor legibilidade
+    plt.xticks(rotation=45)
+
+    # Adicionando a grade para melhorar a visualização
+    plt.grid(True)
+
+    # Ajustando o layout para evitar sobreposição de elementos
+    plt.tight_layout()
+
+    # Salvando o gráfico como imagem
+    plt.savefig("plot.png")
+    plt.close()  # Fechar o gráfico após salvar
 
 def get_river_level():
     url = "https://pmsrs.mg.gov.br/nivel-do-rio-sapucai/"
