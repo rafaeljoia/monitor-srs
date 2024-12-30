@@ -137,7 +137,7 @@ if selected == "Nível do Rio":
         st.write(f"Última busca de informações: {st.session_state.last_fetch}")
 
         # Forçar a atualização da interface
-        st.experimental_rerun()  # Atualização correta para forçar o rerun
+        st.rerun()  # Atualização correta para forçar o rerun
 
     else:
         pass
