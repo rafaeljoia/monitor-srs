@@ -5,6 +5,7 @@ from datetime import datetime
 import pandas as pd
 from main_scraper import get_river_level, update_data, plot_data
 import time
+from streamlit_option_menu import option_menu  # Importando a biblioteca
 
 DATA_FILE = "river_level.csv"
 
@@ -20,26 +21,18 @@ if "last_run" not in st.session_state:
 # Obter o tempo atual
 current_time = time.time()
 
-# Adicionar a fonte do Font Awesome ao cabeçalho (para usar os ícones)
-st.markdown(
-    """
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    """,
-    unsafe_allow_html=True
-)
-
-# Menu de navegação na sidebar com ícones usando Font Awesome
-menu = st.sidebar.radio(
-    "Selecione uma opção",
-    ["Nível do Rio", "Preços de Aluguel", "Outras Informações"],
-    index=0,
-    format_func=lambda x: f"<i class='fa fa-water'></i> {x}" if x == 'Nível do Rio' else (
-        f"<i class='fa fa-dollar-sign'></i> {x}" if x == 'Preços de Aluguel' else
-        f"<i class='fa fa-info-circle'></i> {x}"),  # Ícones diferentes para cada opção
-)
+# Menu com opção de selecionar entre várias páginas
+with st.sidebar:
+    selected = option_menu(
+        "Menu",  # Título do menu
+        ["Nível do Rio", "Preços de Aluguel", "Outras Informações"],  # Opções do menu
+        icons=["cloud-rain", "house", "info-circle"],  # Ícones para cada opção
+        menu_icon="cast",  # Ícone do menu
+        default_index=0,  # A primeira opção será selecionada por padrão
+    )
 
 # Tela de Nível do Rio
-if menu == "Nível do Rio":
+if selected == "Nível do Rio":
     st.title("Monitoramento do Nível do Rio Sapucaí")
 
     # Exibir dados na primeira execução
@@ -102,7 +95,7 @@ if menu == "Nível do Rio":
         st.write(f"Aguardando {refresh_interval} segundos para a próxima atualização...")
 
 # Tela de Preços de Aluguel (exemplo de outra tela)
-elif menu == "Preços de Aluguel":
+elif selected == "Preços de Aluguel":
     st.title("Preços de Aluguel")
     st.write("Aqui estarão os preços de aluguel.")
 
