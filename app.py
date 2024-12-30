@@ -20,8 +20,23 @@ if "last_run" not in st.session_state:
 # Obter o tempo atual
 current_time = time.time()
 
-# Menu de navegação
-menu = st.sidebar.radio("Selecione uma opção", ["Nível do Rio", "Preços de Aluguel", "Outras Informações"], index=0)
+# Menu de navegação com ícones usando Font Awesome
+menu = st.sidebar.radio(
+    "Selecione uma opção",
+    ["Nível do Rio", "Preços de Aluguel", "Outras Informações"],
+    index=0,
+    format_func=lambda x: f"<i class='fa fa-water'></i> {x}" if x == 'Nível do Rio' else (
+        f"<i class='fa fa-dollar-sign'></i> {x}" if x == 'Preços de Aluguel' else
+        f"<i class='fa fa-info-circle'></i> {x}"),  # Ícones diferentes para cada opção
+)
+
+# Adicionar a fonte do Font Awesome ao cabeçalho
+st.markdown(
+    """
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    """,
+    unsafe_allow_html=True
+)
 
 # Tela de Nível do Rio
 if menu == "Nível do Rio":
