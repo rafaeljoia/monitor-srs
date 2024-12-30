@@ -43,7 +43,7 @@ if st.session_state.first_run:
     # Armazenar a última hora da busca
     st.session_state.last_fetch = timestamp
     
-# Após a primeira execução, aguardar o intervalo para atualização
+# Verificar se o tempo de espera foi atingido para a próxima atualização
 if current_time - st.session_state.last_run >= refresh_interval:
     # Atualiza o tempo da última execução
     st.session_state.last_run = current_time
