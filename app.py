@@ -1,7 +1,6 @@
 # pylint: skip-file
 
 import streamlit as st
-import os
 from datetime import datetime
 import pandas as pd
 from main_scraper import get_river_level, update_data, plot_data
@@ -12,13 +11,9 @@ DATA_FILE = "river_level.csv"
 VIEW_COUNT_FILE = "view_count.csv" 
 
 def update_view_count(data_file=VIEW_COUNT_FILE):
-    if os.path.exists(data_file):
-        df = pd.read_csv(data_file)
-        view_count = df.loc[0, "views"] + 1  # Incrementa o contador
-    else:
-        view_count = 1
-        df = pd.DataFrame({"views": [view_count]})
-
+    df = pd.read_csv(data_file)
+    view_count = df.loc[0, "views"] + 1  # Incrementa o contador
+   
     df.loc[0, "views"] = view_count
     df.to_csv(data_file, index=False)
 
