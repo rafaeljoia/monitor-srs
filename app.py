@@ -123,7 +123,7 @@ if selected == "Nível do Rio":
     else:
         pass
         # Exibe a mensagem de espera entre as atualizações
-        st.write(f"Aguardando {refresh_interval} segundos para a próxima atualização...")
+        st.write(f"As atualizações acontecem a cada 1 hora...")
 
 # Tela de Preços de Aluguel (exemplo de outra tela)
 elif selected == "Preços de Aluguel":
