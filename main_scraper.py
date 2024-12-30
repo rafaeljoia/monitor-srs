@@ -31,16 +31,37 @@ def plot_data(df):
 
 def get_river_level():
     url = "https://pmsrs.mg.gov.br/nivel-do-rio-sapucai/"
-    response = requests.get(url)
-    response.raise_for_status()
-
-    soup = BeautifulSoup(response.text, 'html.parser')
-    level_div = soup.find("div", class_="entry-content")  # Altere a classe se necessário
-    if not level_div:
-        return None, None
-
-    # Supondo que a informação esteja num <p> específico
-    level_info = level_div.find("p").text.strip()
-    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     
-    return level_info, timestamp
+    # Adiciona cabeçalhos à requisição
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+    }
+    
+    # Faz a requisição GET com os cabeçalhos
+    response = requests.get(url, headers=headers)
+    response.raise_for_status()
+    
+    # Faz o parse do HTML com BeautifulSoup
+    soup = BeautifulSoup(response.text, 'html.parser')
+    
+    # Localiza o elemento que contém o texto desejado
+    page_content = soup.find("div", class_="page__content")
+    if not page_content:
+        return None, None
+    
+    # Extrai o texto com o nível e a data/hora
+    text_content = page_content.get_text(separator=" ", strip=True)
+    
+    # Procura as informações específicas no texto
+    import re
+    level_match = re.search(r"Nível do Rio Sapucaí: ([\d.]+) metros", text_content)
+    timestamp_match = re.search(r"Data e hora da medição: ([\d\-: ]+)", text_content)
+    
+    if level_match and timestamp_match:
+        level_info = level_match.group(1)
+        timestamp = timestamp_match.group(1)
+        return level_info, timestamp
+    
+    return None, None
