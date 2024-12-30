@@ -17,6 +17,7 @@ hide_github_icon = """
     visibility: hidden;
 }
 """
+st.markdown(hide_github_icon, unsafe_allow_html=True)
 # Inicializar uma variável de estado para controle de tempo
 if "last_run" not in st.session_state:
     st.session_state.last_run = time.time()
