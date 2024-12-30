@@ -27,7 +27,7 @@ refresh_interval = 5
 
 
 st.set_page_config(
-    page_title="Monitor SRS",
+    page_title="Monitor Dados SRS",
     page_icon="🖥️",  # Definindo o ícone como um monitor
     layout="centered",  # Centraliza o conteúdo
     initial_sidebar_state="expanded"  # Sidebar expandida por padrão
@@ -147,11 +147,11 @@ if selected == "Nível do Rio":
 # Tela de Preços de Aluguel (exemplo de outra tela)
 elif selected == "Preços de Aluguel":
     st.title("Preços de Aluguel")
-    st.write("Em breve, valores de alugueis das imobiliárias de Santa Rita do Sapucaí.")
+    st.write("Em breve, dados sobre os valores de alugueis das imobiliárias de Santa Rita do Sapucaí.")
 
     # Aqui você pode adicionar o código para a página de preços de aluguel.
 
 # Outra tela que você desejar
 else:
     st.title("Outras Informações")
-    st.write("Serão disponibilizadas outras informações úteis, como valores de alugueis e outros utilitários para a população.")
+    st.write("Serão disponibilizadas informações de dados úteis para a população, como valores de alugueis, dados importantes da cidade e outros utilitários. Este é um projeto sem fins lucrativos, apenas informativo.")
