@@ -66,12 +66,9 @@ if current_time - st.session_state.last_run >= refresh_interval:
     else:
         st.error("Não foi possível obter os dados do nível do rio.")
 
-    # Forçar a atualização da interface
-    st.experimental_rerun()
-else:
-    # Exibe a mensagem de espera entre as atualizações
-    st.write(f"Aguardando {refresh_interval} segundos para a próxima atualização...")
-
 # Exibir a última data de atualização
 if st.session_state.last_update_time:
     st.write(f"Última busca de informações: {st.session_state.last_update_time}")
+    
+# Mensagem de espera antes da próxima atualização
+st.write(f"Aguardando {refresh_interval} segundos para a próxima atualização...")
