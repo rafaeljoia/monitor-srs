@@ -1,6 +1,7 @@
 # pylint: skip-file
 
 import streamlit as st
+import os
 from datetime import datetime
 import pandas as pd
 from main_scraper import get_river_level, update_data, plot_data
