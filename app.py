@@ -42,7 +42,7 @@ if selected == "Nível do Rio":
 
         # Exibir o gráfico e dados
         if level_info:
-            st.metric(label="Nível Atual do Rio", value=level_info)
+            st.metric(label="Nível Atual do Rio", value=f'{level_info} metros')
             st.write(f"Última atualização: {timestamp}")
 
             # Atualizar os dados
