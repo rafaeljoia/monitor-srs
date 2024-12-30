@@ -57,7 +57,7 @@ current_time = time.time()
 # Menu com opção de selecionar entre várias páginas
 with st.sidebar:
     selected = option_menu(
-        "Menu",  # Título do menu
+        "Monitor SRS",  # Título do menu
         ["Nível do Rio", "Preços de Aluguel", "Outras Informações"],  # Opções do menu
         icons=["cloud-rain", "house", "info-circle"],  # Ícones para cada opção
         menu_icon="cast",  # Ícone do menu
