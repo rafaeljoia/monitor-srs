@@ -12,12 +12,23 @@ DATA_FILE = "river_level.csv"
 # Intervalo de 5 segundos para testes
 refresh_interval = 5
 
-hide_github_icon = """
-#GithubIcon {
-    visibility: hidden;
-}
-"""
-st.markdown(hide_github_icon, unsafe_allow_html=True)
+
+st.set_page_config(
+    page_title="Monitor SRS",
+    page_icon="🖥️",  # Definindo o ícone como um monitor
+    layout="centered",  # Centraliza o conteúdo
+    initial_sidebar_state="expanded"  # Sidebar expandida por padrão
+)
+
+st.markdown(
+    """
+    <style>
+         .css-1v3fvcr {display: none;}  # Esconde os links do GitHub, etc.
+        .css-1m0vuv2 {display: none;}  # Esconde outros elementos de footer (dependendo da versão)
+    </style>
+    """, 
+    unsafe_allow_html=True
+)
 # Inicializar uma variável de estado para controle de tempo
 if "last_run" not in st.session_state:
     st.session_state.last_run = time.time()
