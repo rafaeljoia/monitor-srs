@@ -1,7 +1,10 @@
+# pylint: skip-file
+
 import streamlit as st
 from datetime import datetime
-import time
+import pandas as pd
 from main_scraper import get_river_level, update_data, plot_data
+import time
 
 DATA_FILE = "river_level.csv"
 
@@ -12,7 +15,7 @@ refresh_interval = 5
 if "last_run" not in st.session_state:
     st.session_state.last_run = time.time()
     st.session_state.first_run = True  # Flag para a primeira execução
-    st.session_state.last_update_time = None  # Variável para armazenar a última data de atualização
+    st.session_state.last_fetch = None  # Armazena a data da última busca
 
 # Obter o tempo atual
 current_time = time.time()
@@ -21,9 +24,6 @@ current_time = time.time()
 if st.session_state.first_run:
     st.session_state.first_run = False  # Desmarcar a primeira execução
     level_info, timestamp = get_river_level()
-
-    # Atualizar a data da última tentativa de atualização
-    st.session_state.last_update_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     # Exibir o gráfico e dados
     if level_info:
@@ -39,6 +39,9 @@ if st.session_state.first_run:
         st.image("plot.png")
     else:
         st.error("Não foi possível obter os dados do nível do rio.")
+
+    # Armazenar a última hora da busca
+    st.session_state.last_fetch = timestamp
     
 # Após a primeira execução, aguardar o intervalo para atualização
 if current_time - st.session_state.last_run >= refresh_interval:
@@ -47,9 +50,6 @@ if current_time - st.session_state.last_run >= refresh_interval:
     
     # Obter o nível atual
     level_info, timestamp = get_river_level()
-
-    # Atualizar a data da última tentativa de atualização
-    st.session_state.last_update_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     # Exibir os dados atualizados
     if level_info:
@@ -66,9 +66,14 @@ if current_time - st.session_state.last_run >= refresh_interval:
     else:
         st.error("Não foi possível obter os dados do nível do rio.")
 
-# Exibir a última data de atualização
-if st.session_state.last_update_time:
-    st.write(f"Última busca de informações: {st.session_state.last_update_time}")
+    # Armazenar a última hora da busca
+    st.session_state.last_fetch = timestamp
     
-# Mensagem de espera antes da próxima atualização
-st.write(f"Aguardando {refresh_interval} segundos para a próxima atualização...")
+    # Exibir a mensagem da última busca
+    st.write(f"Última busca de informações: {st.session_state.last_fetch}")
+    
+    # Forçar a atualização da interface
+    st.experimental_rerun()
+else:
+    # Exibe a mensagem de espera entre as atualizações
+    st.write(f"Aguardando {refresh_interval} segundos para a próxima atualização...")
