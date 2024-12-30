@@ -143,7 +143,7 @@ if selected == "Nível do Rio":
         pass
         # Exibe a mensagem de espera entre as atualizações
         st.write("As atualizações acontecem a cada 1 hora!")
-        st.write(f"<i class='fas fa-eye'></i> {view_count} visualizações do monitor até o momento", unsafe_allow_html=True)
+        st.write(f"👁️ {view_count} visualizações do monitor até o momento", unsafe_allow_html=True)
 
 
 # Tela de Preços de Aluguel (exemplo de outra tela)
