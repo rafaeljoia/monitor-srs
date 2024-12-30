@@ -20,60 +20,80 @@ if "last_run" not in st.session_state:
 # Obter o tempo atual
 current_time = time.time()
 
-# Exibir dados na primeira execução
-if st.session_state.first_run:
-    st.session_state.first_run = False  # Desmarcar a primeira execução
-    level_info, timestamp = get_river_level()
+# Menu de navegação
+menu = st.sidebar.radio("Selecione uma opção", ["Nível do Rio", "Preços de Aluguel", "Outras Informações"], index=0)
 
-    # Exibir o gráfico e dados
-    if level_info:
-        st.metric(label="Nível Atual do Rio", value=level_info)
-        st.write(f"Última atualização: {timestamp}")
+# Tela de Nível do Rio
+if menu == "Nível do Rio":
+    st.title("Monitoramento do Nível do Rio Sapucaí")
 
-        # Atualizar os dados
-        df = update_data(level_info, timestamp, data_file=DATA_FILE)
-        st.dataframe(df)
+    # Exibir dados na primeira execução
+    if st.session_state.first_run:
+        st.session_state.first_run = False  # Desmarcar a primeira execução
+        level_info, timestamp = get_river_level()
 
-        # Plotar o gráfico
-        plot_data(df)
-        st.image("plot.png")
+        # Exibir o gráfico e dados
+        if level_info:
+            st.metric(label="Nível Atual do Rio", value=level_info)
+            st.write(f"Última atualização: {timestamp}")
+
+            # Atualizar os dados
+            df = update_data(level_info, timestamp, data_file=DATA_FILE)
+            st.dataframe(df)
+
+            # Plotar o gráfico
+            plot_data(df)
+            st.image("plot.png")
+        else:
+            st.error("Não foi possível obter os dados do nível do rio.")
+        
+        # Armazenar a última hora da busca
+        st.session_state.last_fetch = timestamp
+
+    # Verificar se o tempo de espera foi atingido para a próxima atualização
+    if current_time - st.session_state.last_run >= refresh_interval:
+        # Atualiza o tempo da última execução
+        st.session_state.last_run = current_time
+        
+        # Obter o nível atual
+        level_info, timestamp = get_river_level()
+
+        # Exibir os dados atualizados
+        if level_info:
+            st.metric(label="Nível Atual do Rio", value=level_info)
+            st.write(f"Última atualização: {timestamp}")
+
+            # Atualizar os dados
+            df = update_data(level_info, timestamp, data_file=DATA_FILE)
+            st.dataframe(df)
+
+            # Plotar o gráfico
+            plot_data(df)
+            st.image("plot.png")
+        else:
+            st.error("Não foi possível obter os dados do nível do rio.")
+
+        # Armazenar a última hora da busca
+        st.session_state.last_fetch = timestamp
+        
+        # Exibir a mensagem da última busca
+        st.write(f"Última busca de informações: {st.session_state.last_fetch}")
+
+        # Forçar a atualização da interface
+        st.experimental_rerun()  # Atualização correta para forçar o rerun
+
     else:
-        st.error("Não foi possível obter os dados do nível do rio.")
+        # Exibe a mensagem de espera entre as atualizações
+        st.write(f"Aguardando {refresh_interval} segundos para a próxima atualização...")
 
-    # Armazenar a última hora da busca
-    st.session_state.last_fetch = timestamp
-    
-# Verificar se o tempo de espera foi atingido para a próxima atualização
-if current_time - st.session_state.last_run >= refresh_interval:
-    # Atualiza o tempo da última execução
-    st.session_state.last_run = current_time
-    
-    # Obter o nível atual
-    level_info, timestamp = get_river_level()
+# Tela de Preços de Aluguel (exemplo de outra tela)
+elif menu == "Preços de Aluguel":
+    st.title("Preços de Aluguel")
+    st.write("Aqui estarão os preços de aluguel.")
 
-    # Exibir os dados atualizados
-    if level_info:
-        st.metric(label="Nível Atual do Rio", value=level_info)
-        st.write(f"Última atualização: {timestamp}")
+    # Aqui você pode adicionar o código para a página de preços de aluguel.
 
-        # Atualizar os dados
-        df = update_data(level_info, timestamp, data_file=DATA_FILE)
-        st.dataframe(df)
-
-        # Plotar o gráfico
-        plot_data(df)
-        st.image("plot.png")
-    else:
-        st.error("Não foi possível obter os dados do nível do rio.")
-
-    # Armazenar a última hora da busca
-    st.session_state.last_fetch = timestamp
-    
-    # Exibir a mensagem da última busca
-    st.write(f"Última busca de informações: {st.session_state.last_fetch}")
-    
-    # Forçar a atualização da interface
-    st.rerun()  # Atualização correta para forçar o rerun
+# Outra tela que você desejar
 else:
-    # Exibe a mensagem de espera entre as atualizações
-    st.write(f"Aguardando {refresh_interval} segundos para a próxima atualização...")
+    st.title("Outras Informações")
+    st.write("Aqui estarão outras informações relevantes.")
