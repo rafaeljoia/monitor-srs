@@ -73,7 +73,7 @@ if current_time - st.session_state.last_run >= refresh_interval:
     st.write(f"Última busca de informações: {st.session_state.last_fetch}")
     
     # Forçar a atualização da interface
-    st.experimental_rerun()
+    st.rerun()  # Atualização correta para forçar o rerun
 else:
     # Exibe a mensagem de espera entre as atualizações
     st.write(f"Aguardando {refresh_interval} segundos para a próxima atualização...")
