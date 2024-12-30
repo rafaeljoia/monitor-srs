@@ -48,14 +48,15 @@ if selected == "Nível do Rio":
             # Atualizar os dados
             df = update_data(level_info, timestamp, data_file=DATA_FILE)
             
+            # Plotar o gráfico
+            plot_data(df)
+            st.image("plot.png")
+
+            # Renomear as colunas após o plot
             df = df.rename(columns={
                 'timestamp': 'Hora da Atualização',
                 'level': 'Nível em Metros'
             })
-            
-            # Plotar o gráfico
-            plot_data(df)
-            st.image("plot.png")
 
             # Exibir a tabela abaixo do gráfico
             st.dataframe(df)
