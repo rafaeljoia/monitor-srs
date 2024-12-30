@@ -6,16 +6,31 @@ import datetime
 import pandas as pd
 import matplotlib.pyplot as plt
 
+import pandas as pd
+
 def update_data(level, timestamp, data_file="river_level.csv"):
     try:
+        # Tentar ler o arquivo CSV existente
         df = pd.read_csv(data_file)
     except FileNotFoundError:
+        # Se o arquivo não existir, criar um DataFrame vazio com as colunas esperadas
         df = pd.DataFrame(columns=["timestamp", "level"])
 
+    # Criar uma nova linha de dados
     new_row = {"timestamp": timestamp, "level": float(level)}
-    df = pd.concat([df, pd.DataFrame([new_row])], ignore_index=True)
-    df.to_csv(data_file, index=False)
+
+    # Verificar se os dados já existem no DataFrame
+    if not ((df["timestamp"] == timestamp) & (df["level"] == float(level))).any():
+        # Se não existir, adicionar a nova linha
+        df = pd.concat([df, pd.DataFrame([new_row])], ignore_index=True)
+        # Atualizar o arquivo CSV com os novos dados
+        df.to_csv(data_file, index=False)
+    else:
+        # Caso já exista, você pode optar por não atualizar o CSV
+        print("Dados já existem no CSV. Nenhuma atualização realizada.")
+
     return df
+
 
 def plot_data(df):
     df['timestamp'] = pd.to_datetime(df['timestamp'])

@@ -101,6 +101,7 @@ if selected == "Nível do Rio":
         st.experimental_rerun()  # Atualização correta para forçar o rerun
 
     else:
+        pass
         # Exibe a mensagem de espera entre as atualizações
         st.write(f"Aguardando {refresh_interval} segundos para a próxima atualização...")
 
